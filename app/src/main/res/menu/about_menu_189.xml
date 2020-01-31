@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AboutMenuTheme"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/about">
+        <menu>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+            <item android:enabled="false"/>
+
+            <item
+                android:id="@+id/nav_about_back"
+                android:icon="@drawable/ic_arrow_back_black_24dp"
+                android:title="@string/go_back" />
+        </menu>
+    </item>
+
+</menu>

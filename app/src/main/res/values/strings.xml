@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">1Cal</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="no_cardetails">Click on the button below to begin creating your reminder!</string>
+    <string name="title_activity_add_reminder">Add Reminder</string>
+    <string name="title_activity_edit_reminder">Edit Reminder</string>
+
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
+    <string name="add_reminder">Reminder</string>
+    <string name="details">Details</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="repeat">Repeat</string>
+    <string name="repeat_off">Off</string>
+    <string name="repeat_no">Repetition Interval </string>
+    <string name="repeat_type">Type of Repetitions</string>
+
+    <string name="action_discard_reminder">Discard Reminder</string>
+    <string name="action_save_reminder">Save Reminder</string>
+
+    <string name="editor_activity_title_new_reminder">Add Reminder Details</string>
+    <string name="editor_activity_title_edit_reminder">Edit Reminder</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+
+    <string name="keep_editing">Keep Editing</string>
+    <string name="delete_dialog_msg">Delete this Reminder?</string>
+
+    <string name="delete">Delete</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="editor_delete_reminder_successful">Reminder deleted</string>
+
+    <string name="editor_delete_reminder_failed">Error with deleting reminder</string>
+
+    <string name="editor_insert_reminder_successful">Reminder saved</string>
+
+    <string name="editor_insert_reminder_failed">Error with saving reminder</string>
+
+    <string name="editor_update_reminder_successful">Reminder updated</string>
+
+    <string name="editor_update_reminder_failed">Error with updating reminder</string>
+
+    <string name="importance">Importance Level</string>
+    <string name="title_activity_groups_edit">1Cal Groups</string>
+
+    <string name="light_importance">Low importance</string>
+    <string name="medium_importance">Medium importance</string>
+    <string name="urgent_importance">Urgent</string>
+
+    <string name="choose_importance">Choose level of importance</string>
+
+    <string name="fingerprint_subtitle">Events data</string>
+    <string name="people_fingerprint_subtitle">Contacts data</string>
+    <string name="fingerprint_desc">OneCal keeps your data secure and locks it with your own biometrics.</string>
+
+    <string name="create_event_dialog">Create an event</string>
+    <string name="create_event_fail">Creating the event failed</string>
+    <string name="create_event_success">Event added</string>
+    <string name="event_name">Event title</string>
+    <string name="create_event_ok">OK</string>
+    <string name="create_event_cancel">Cancel</string>
+
+    <string name="all_tab_name">All</string>
+
+    <string name="repeat_hour">Hour</string>
+    <string name="repeat_day">Day</string>
+    <string name="repeat_minute">Minute</string>
+    <string name="repeat_week">Week</string>
+    <string name="repeat_month">Month</string>
+    <string name="repeat_year">Year</string>
+    <string name="repetitions_num">Frequency of repeating</string>
+    <string name="enter_num">Enter number</string>
+
+    <string name="every_repeat">Every %1$s %2$s(s)</string>
+
+    <string name="reminder_title_blank">Reminder title cannot be blank!</string>
+
+    <string name="alarm_time_is">Alarm time is %1$d</string>
+    <string name="date_not_set">Date not set</string>
+    <string name="repeat_not_set">Repeat not set</string>
+
+    <string name="repeat_is_off">Repeat is off</string>
+
+    <string name="groups">Groups</string>
+    <string name="edit_groups">Edit Groups</string>
+    <string name="add_group">Add a new group</string>
+    <string name="enter_group_name">Enter group name</string>
+    <string name="delete_group">Are you sure you want to delete group %1$s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="events">Events</string>
+    <string name="people">People</string>
+    <string name="feedback">Send feedback</string>
+    <string name="about">About this app</string>
+    <string name="more">Additional options</string>
+
+    <string name="select_type">Select Type</string>
+
+    <string name="repeat_on_outside">On</string>
+    <string name="repeat_off_outside">Off</string>
+
+    <string name="all_empty">Welcome to 1Cal! Add a group from the menu in the top right corner and then create an event from the new group.</string>
+    <string name="title_activity_annoying_alarm">1Cal Reminder</string>
+
+    <string name="mark_complete">Mark as completed</string>
+    <string name="ignore">Ignore for now</string>
+    <string name="dont_forget">Don\'t forget your events!</string>
+
+    <string name="about_text1">An app to help you organize your daily life with less of a hassle. This is 1Cal. This app is a project, participating in the National IT Olympiad in Bulgaria.  Developed by Nicola Nicolov and Ognyan Arsov.</string>
+    <string name="close_window">Close</string>
+    <string name="go_back">Back</string>
+
+    <string name="people_title">People</string>
+    <string name="no_contacts">There are no contacts in this group. Assign contacts to it by clicking the menu icon at the top right and using the Assign Contacts option.</string>
+    <string name="no_people_found">There are no contacts found on this device. You can add them via your system contacts app. If this is a mistake, check 1Cal contacts permission in Settings.</string>
+    <string name="assign_contact_text">Assign Contacts</string>
+    <string name="title_activity_assign_contact" translatable="false">AssignContactActivity</string>
+    <string name="no_changes_assign_contact">Your changes were not saved.</string>
+    <string name="select_group_first">Select a group to assign contacts in</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="event_fingerprint_summary_off">Event fingerprint protection is disabled</string>
+    <string name="event_fingerprint_summary_on">Event fingerprint protection is enabled</string>
+    <string name="event_fingerprint_title">Lock Events with Fingerprint</string>
+    <string name="event_people_summary_off">Contacts fingerprint protection is disabled</string>
+    <string name="event_people_summary_on">Contacts fingerprint protection is enabled</string>
+    <string name="event_people_title">Lock Contacts with Fingerprint</string>
+    <string name="calendar_mode_title">Calendar Mode</string>
+    <string name="calendar_mode_summary">This feature allows you to semi-automatically create calendar events along with OneCal events</string>
+</resources>

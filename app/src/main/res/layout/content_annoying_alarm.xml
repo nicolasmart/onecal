@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".AnnoyingAlarmActivity"
+    android:id="@+id/annoying_view"
+    android:background="@color/colorPrimary"
+    tools:showIn="@layout/activity_annoying_alarm">
+
+    <TextView
+        android:id="@+id/group_final"
+        android:layout_width="match_parent"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/title_final"
+        android:paddingBottom="7dp"
+        android:textSize="18sp"
+        android:text="@string/groups"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:id="@+id/title_final"
+        android:gravity="center"
+        android:text="@string/reminder_title_blank"
+        android:paddingBottom="7dp"
+        app:layout_constraintBottom_toTopOf="@id/importance_text_final"
+        />
+
+    <TextView
+        android:id="@+id/importance_text_final"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/thumb"
+        android:paddingBottom="20dp"
+        android:textSize="18sp"
+        android:text="@string/importance"
+        />
+
+    <ImageView
+        android:id="@+id/thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_newcal"/>
+
+    <Button
+        android:id="@+id/dismiss_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/thumb"
+        android:background="@drawable/ic_dismiss_button"
+        android:text="@string/mark_complete"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_done_pleasant_green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+    <Button
+        android:id="@+id/chat_head_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/dismiss_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:background="@drawable/ic_ignore_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#fff"
+        android:text="@string/ignore"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
