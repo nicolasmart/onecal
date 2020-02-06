@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import tk.onecal.onecal.data.PeopleCustomContract;
+
 public class AssignContactCursorAdapter extends CursorAdapter {
 
     private TextView mContactName, mContactPhoneNumber, mContactLabel, invisibleId;
@@ -129,16 +131,28 @@ public class AssignContactCursorAdapter extends CursorAdapter {
             box_bind.setChecked(false);
 
         int nameColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY);
-        int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER);
+        int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
         int photoColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI);
-        int labelColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL);
-        int idColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID);
+        int idColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
 
         String phoneNumber = cursor.getString(phoneNumberColumnIndex);
         String name = cursor.getString(nameColumnIndex);
-        String label = cursor.getString(labelColumnIndex);
         String photoData = cursor.getString(photoColumnIndex);
         String id = cursor.getString(idColumnIndex);
+
+        String label=""; ///TODO: Do the same for AssignContact
+        Cursor cursor_group = context.getContentResolver().query(
+                PeopleCustomContract.PeopleCustomEntry.CONTENT_URI,
+                null,
+                PeopleCustomContract.PeopleCustomEntry.KEY_CONTACT_ID + " LIKE \""
+                        + id + "\"", null, null);
+
+        if (cursor_group.moveToFirst()) {
+            int colIdx = cursor_group
+                    .getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_GROUP);
+            label = cursor_group.getString(colIdx);
+        }
+        cursor_group.close();
 
         if (!idOfContacts.contains(id)) {
             idOfContacts.add(id);

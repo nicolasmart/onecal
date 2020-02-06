@@ -16,4 +16,9 @@
         android:orderInCategory="102"
         android:title="@string/assign_contact_text"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_archived_contacts"
+        android:orderInCategory="103"
+        android:title="@string/archived_people"
+        app:showAsAction="never" />
 </menu>

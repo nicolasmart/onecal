@@ -38,6 +38,8 @@ public class AlarmReminderContract {
         public static final String KEY_ACTIVE = "active";
         public static final String KEY_GROUP = "group_name";
         public static final String KEY_IMPORTANCE_LEVEL = "importance_level";
+        public static final String KEY_PEOPLE_TAGGED = "people_tagged";
+        public static final String KEY_ARCHIVED = "archived";
 
     }
 

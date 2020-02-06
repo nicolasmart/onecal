@@ -44,6 +44,20 @@
         android:text="Additional info"
         android:textAppearance="?attr/textAppearanceListItem" />
 
+    <TextView
+        android:id="@+id/contact_invisible_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@+id/photoview"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/contact_invisible_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="@+id/invisible_id"
+        android:visibility="invisible"/>
+
     <ImageView
         android:id="@+id/photoview"
         android:layout_width="73sp"

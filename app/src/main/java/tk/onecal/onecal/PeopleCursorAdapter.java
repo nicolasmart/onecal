@@ -21,9 +21,11 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import tk.onecal.onecal.data.PeopleCustomContract;
+
 public class PeopleCursorAdapter extends CursorAdapter {
 
-    private TextView mContactName, mContactPhoneNumber, mContactLabel;
+    private TextView mContactName, mContactPhoneNumber, mContactLabel, mInvisibleId;
     private ImageView mContactImage;
 
     private Context mContext;
@@ -40,24 +42,40 @@ public class PeopleCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         int nameColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY);
-        int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER);
+        int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
         int photoColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI);
-        int labelColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.LABEL);
+        int idColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
 
         String phoneNumber = cursor.getString(phoneNumberColumnIndex);
         String name = cursor.getString(nameColumnIndex);
-        String label = cursor.getString(labelColumnIndex);
         String photoData = cursor.getString(photoColumnIndex);
+        String id = cursor.getString(idColumnIndex);
 
         mContactName = (TextView) view.findViewById(R.id.contact_name);
         mContactPhoneNumber = (TextView) view.findViewById(R.id.contact_phone_number);
-        mContactLabel = (TextView) view.findViewById(R.id.contact_label);
         mContactImage = (ImageView) view.findViewById(R.id.photoview);
+        mContactLabel = (TextView) view.findViewById(R.id.contact_label);
+        mInvisibleId = (TextView) view.findViewById(R.id.contact_invisible_id);
+        mInvisibleId.setText(id);
 
         mContext=context;
 
         mContactName.setText(name);
         mContactPhoneNumber.setText(phoneNumber);
+
+        String label=""; ///TODO: Do the same for AssignContact
+        Cursor cursor_group = context.getContentResolver().query(
+                PeopleCustomContract.PeopleCustomEntry.CONTENT_URI,
+                null,
+                PeopleCustomContract.PeopleCustomEntry.KEY_CONTACT_ID + " LIKE \""
+                        + id + "\"", null, null);
+
+        if (cursor_group.moveToFirst()) {
+            int colIdx = cursor_group
+                    .getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_GROUP);
+            label = cursor_group.getString(colIdx);
+        }
+        cursor_group.close();
 
         String displaylist="";
         try {

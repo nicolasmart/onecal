@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -138,11 +140,26 @@ public class ReminderAlarmService extends IntentService {
         String description = "";
         String importanceLevel = "";
         String group = "";
+        String id = "";
+
+        /// TODO: Manual Archiving in AddReminderActivity
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 description = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
                 importanceLevel = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL);
                 group = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_GROUP);
+                id = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry._ID);
+
+                if (AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT).contains("false")) {
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED, "true");
+                        Uri currUri = Uri.parse(ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, Integer.valueOf(id)).toString());
+                        getContentResolver().update(currUri, values, null, null);
+                    } catch (Exception ex) {
+
+                    }
+                }
             }
         } finally {
             if (cursor != null) {
@@ -150,9 +167,7 @@ public class ReminderAlarmService extends IntentService {
             }
         }
 
-        String[] groupNames = loadArray2("names", getApplicationContext());
-
-        notification(description, importanceLevel + " (" + groupNames[Integer.valueOf(group)] + ")", getApplicationContext());
+        notification(description, importanceLevel + " (" + group + ")", getApplicationContext());
 
         String[] eventTitles = loadArray("name", getApplicationContext());
         String[] eventImportances = loadArray("importance", getApplicationContext());
@@ -161,7 +176,7 @@ public class ReminderAlarmService extends IntentService {
 
         eventTitles[eventTitles.length-1] = description;
         eventImportances[eventImportances.length-1]=importanceLevel;
-        eventGroups[eventGroups.length-1]=groupNames[Integer.valueOf(group)];
+        eventGroups[eventGroups.length-1]=group;
         eventNotifyId[eventNotifyId.length-1]=String.valueOf(notificationId);
 
         saveArray(eventTitles, "name", getApplicationContext());

@@ -1,14 +1,17 @@
 package tk.onecal.onecal;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.biometrics.BiometricPrompt;
+import android.net.Uri;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.provider.ContactsContract;
@@ -19,6 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -31,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.provider.Settings;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
@@ -54,6 +59,7 @@ import java.security.Signature;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT;
 import static android.hardware.biometrics.BiometricPrompt.BIOMETRIC_ERROR_NO_BIOMETRICS;
@@ -82,101 +88,118 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_people);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar2);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager2);
-        authenticationCover = (ImageView) findViewById(R.id.authenticationHider);
-        authenticationCover.bringToFront();
 
-        mEditContacts = (FloatingActionButton) findViewById(R.id.fab2);
-
-        mEditContacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leaveAlive();
-                switchToMainContactsApp();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+                Toast.makeText(this, getString(R.string.contact_permission_needed), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", this.getPackageName(), null));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, 789);
+            }else {
+                requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 123);
             }
-        });
+        } else {
+            setContentView(R.layout.activity_people);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tabs2);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tabPosition = tab.getPosition();
-            }
+            mToolbar = (Toolbar) findViewById(R.id.toolbar2);
+            mViewPager = (ViewPager) findViewById(R.id.viewpager2);
+            authenticationCover = (ImageView) findViewById(R.id.authenticationHider);
+            authenticationCover.bringToFront();
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+            mEditContacts = (FloatingActionButton) findViewById(R.id.fab2);
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(Color.parseColor("#d73d31"), getResources().getColor(R.color.colorPrimaryDark));
-                else animateStatusBar(Color.parseColor("#e94d42"), getResources().getColor(R.color.colorPrimaryDark));
-            }
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerSlide(final View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-
-                if (slideOffset==0) {
-                    currentOpenState=0;
-                    newState=true;
+            mEditContacts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    leaveAlive();
+                    switchToMainContactsApp();
                 }
-                else if (slideOffset==1) {
-                    currentOpenState=1;
-                    newState=true;
+            });
+
+            mTabLayout = (TabLayout) findViewById(R.id.tabs2);
+            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    tabPosition = tab.getPosition();
                 }
-                else if (newState==true) {
-                    if (currentOpenState==0) {
-                        if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#d73d31"));
-                        else animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#e94d42"));
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
+
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+            final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                    if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(Color.parseColor("#D84136"), getResources().getColor(R.color.colorPrimaryDark));
+                    else animateStatusBar(Color.parseColor("#EC554C"), getResources().getColor(R.color.colorPrimaryDark));
+                }
+
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                }
+
+                @Override
+                public void onDrawerSlide(final View drawerView, float slideOffset) {
+                    super.onDrawerSlide(drawerView, slideOffset);
+
+                    if (slideOffset == 0) {
+                        currentOpenState = 0;
+                        newState = true;
+                    } else if (slideOffset == 1) {
+                        currentOpenState = 1;
+                        newState = true;
+                    } else if (newState == true) {
+                        if (currentOpenState == 0) {
+                            if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#D84136"));
+                            else animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#EC554C"));
+                        }
+                        newState = false;
                     }
-                    newState=false;
                 }
+            };
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar2);
+
+            setupViewPager(mViewPager);
+            mTabLayout.setupWithViewPager(mViewPager);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                authenticationCover.setVisibility(View.VISIBLE);
+                mTabLayout.setVisibility(View.INVISIBLE);
+                mAppBarLayout.setOutlineProvider(null);
+                fingerprintCheck();
+            } else {
+                authenticationCover.setVisibility(View.INVISIBLE);
+                mTabLayout.setVisibility(View.VISIBLE);
             }
-        };
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar2);
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setCheckedItem(R.id.nav_people);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        setupViewPager(mViewPager);
-        mTabLayout.setupWithViewPager(mViewPager);
+            View hView =  navigationView.getHeaderView(0);
+            ImageView header = hView.findViewById(R.id.nav_header);
+            if (Locale.getDefault().getLanguage().contains("en")) header.setImageResource(R.drawable.onecal_header);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            authenticationCover.setVisibility(View.VISIBLE);
-            mTabLayout.setVisibility(View.INVISIBLE);
-            mAppBarLayout.setOutlineProvider(null);
-            fingerprintCheck();
+            aboutView = findViewById(R.id.about_view);
         }
-        else {
-            authenticationCover.setVisibility(View.INVISIBLE);
-            mTabLayout.setVisibility(View.VISIBLE);
-        }
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_people);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        aboutView = findViewById(R.id.about_view);
     }
 
     void leaveAlive()
@@ -227,9 +250,13 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
-        int suretabposition = tabPosition;
-        setupViewPager(mViewPager);
-        selectPage(suretabposition);
+        try {
+            int suretabposition = tabPosition;
+            setupViewPager(mViewPager);
+            selectPage(suretabposition);
+        } catch (Exception ex) {
+
+        }
     }
 
     public String[] loadArray(String arrayName, Context mContext) {
@@ -319,9 +346,15 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
             leaveAlive();
             return true;
         }
+        if (id == R.id.action_archived_contacts) {
+            Intent intentGroup = new Intent(this, ArchivedPeopleActivity.class);
+            startActivity(intentGroup);
+            leaveAlive();
+            return true;
+        }
         if (id == R.id.action_assign_contact) {
             Intent intentGroup = new Intent(this, AssignContactActivity.class);
-            if (groupTabs[tabPosition-1].contains(getString(R.string.all_tab_name))) {
+            if (tabPosition==0) {
                 Toast.makeText(this, getString(R.string.select_group_first), Toast.LENGTH_LONG).show();
                 return false;
             }

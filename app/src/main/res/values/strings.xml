@@ -111,7 +111,7 @@
     <string name="ignore">Ignore for now</string>
     <string name="dont_forget">Don\'t forget your events!</string>
 
-    <string name="about_text1">An app to help you organize your daily life with less of a hassle. This is 1Cal. This app is a project, participating in the National IT Olympiad in Bulgaria.  Developed by Nicola Nicolov and Ognyan Arsov.</string>
+    <string name="about_text1">An app to help you organize your daily life with less of a hassle. This is 1Cal. This app is a project, participating in SoftUniada.  Developed by Nicola Nicolov and Ognyan Arsov.</string>
     <string name="close_window">Close</string>
     <string name="go_back">Back</string>
 
@@ -132,4 +132,31 @@
     <string name="event_people_title">Lock Contacts with Fingerprint</string>
     <string name="calendar_mode_title">Calendar Mode</string>
     <string name="calendar_mode_summary">This feature allows you to semi-automatically create calendar events along with OneCal events</string>
+    <string name="title_activity_contact_view" translatable="false">ContactViewActivity</string>
+    <string name="tag_person">Tag People</string>
+    <string name="saved_to_onecal">Saved to OneCal</string>
+    <string name="title_activity_tag_contact">Tag People</string>
+    <string name="no_archived_events">No archived events</string>
+    <string name="archived_events">Archived Events</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="no_events_with_this_person">You have not created any events with this contact. Tag them in an existing event or create a new one by clicking on the button in the bottom right.</string>
+    <string name="archived_people">Archived Contacts</string>
+    <string name="no_archived_contacts">You don\'t have any archived contacts. Any grouped contacts that you accidentally delete from your phone can be found here.</string>
+    <string name="what_to_do_archived_contact">Choose an action for the selected contact</string>
+    <string name="restore_archived_contact">Restore</string>
+    <string name="call">Call</string>
+    <string name="message">Message</string>
+    <string name="tagged_contacts">Event with Tagged People</string>
+    <string name="email">Send E-mail</string>
+    <string name="no_email_found">no e-mail address available</string>
+    <string name="contact_permission_needed">Contact permission is required in order to use the People module</string>
+    <string name="name_or_nickname">Name or nickname</string>
+    <string name="required_name">This is a required field. Remember: you don\'t have to use your real name.</string>
+    <string name="required_message">This is a required field.</string>
+    <string name="data_sent">Your message was sent and we\'ll get back to you soon!</string>
+    <string name="help_title">More Information</string>
+    <string name="help_desc">You can ask a question or leave a suggestion here. Leaving an e-mail address is not required but it\'s useful to get a saved copy of your conversation. You will receive replies to your messages through notifications and e-mails (if available).</string>
+    <string name="email_feedback">E-mail Address</string>
+    <string name="send_button">Send</string>
+    <string name="more_info">Learn More</string>
 </resources>

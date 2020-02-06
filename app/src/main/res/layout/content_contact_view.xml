@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ContactViewActivity"
+    tools:showIn="@layout/activity_contact_view">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:paddingTop="40dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_person_white_24dp"
+        android:tint="?android:attr/textColorPrimary"/>
+
+    <ImageView
+        android:id="@+id/contact_photo_view"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:paddingTop="40dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/contact_name_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contact_photo_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingTop="12dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Contact Name"
+        android:textAppearance="?attr/textAppearanceListItem"/>
+
+    <TextView
+        android:id="@+id/contact_phone_number_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contact_name_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingTop="12dp"
+        android:textSize="18sp"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/contact_email_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contact_phone_number_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingTop="5dp"
+        android:textSize="18sp"
+        android:paddingBottom="10dp"
+        android:text=""/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/contact_email_view"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/call_button"
+            android:onClick="callContact"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_call_black_24dp"
+            android:tint="?android:attr/textColorPrimary"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
+
+        <ImageButton
+            android:id="@+id/sms_button"
+            android:onClick="smsContact"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:paddingTop="6dp"
+            android:src="@drawable/ic_message_black_24dp"
+            android:tint="?android:attr/textColorPrimary"/>
+
+        <ImageButton
+            android:id="@+id/mail_button"
+            android:onClick="mailContact"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_mail_outline_black_24dp"
+            android:tint="?android:attr/textColorPrimary"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/event_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="240dp"
+        android:paddingTop="60sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

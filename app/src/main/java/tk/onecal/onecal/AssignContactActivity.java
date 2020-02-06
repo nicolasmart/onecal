@@ -92,7 +92,7 @@ public class AssignContactActivity extends AppCompatActivity {
         String[] selectedNumbers = loadArray("assignnumbers", getApplicationContext());
         String[] selectedPhotos = loadArray("assignphotos", getApplicationContext());
         String[] selectedGroups = loadArray("assigngroups", getApplicationContext());
-        String[] selectedAction = loadArray("assigndelete", getApplicationContext());
+        String[] selectedAction = loadArray("assigndelete", getApplicationContext()); ///TODO: See what's this about
         deleteArray("assignlist", getApplicationContext());
         deleteArray("assignnames", getApplicationContext());
         deleteArray("assignnumbers", getApplicationContext());
@@ -112,11 +112,7 @@ public class AssignContactActivity extends AppCompatActivity {
             groupString=removeGroup(selectedGroups[i], groupName);
             if (contained == false) groupString=addGroup(selectedGroups[i], groupName);
 
-            ops.add(android.content.ContentProviderOperation.newUpdate(
-                    android.provider.ContactsContract.Data.CONTENT_URI)
-                    .withSelection(where, labelParams)
-                    .withValue(ContactsContract.CommonDataKinds.Phone.LABEL, groupString)
-                    .build());
+            if (groupString.contains("null")) groupString="";
 
             ContentValues values = new ContentValues();
 

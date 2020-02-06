@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+repositories {
+    google ()
+    jcenter()
+}
 
 android {
     compileSdkVersion 28
@@ -16,6 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
@@ -30,6 +41,15 @@ dependencies {
     implementation 'com.bignerdranch.android:recyclerview-multiselect:+'
     implementation 'com.wrapp.floatlabelededittext:library:0.0.6'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
+    implementation 'com.firebase:firebase-client-android:2.5.0'
+    implementation 'com.google.firebase:firebase-config:19.1.1'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.3'
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
     implementation 'androidx.preference:preference:1.1.0-alpha05'
     testImplementation 'junit:junit:4.12'

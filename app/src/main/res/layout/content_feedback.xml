@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".FeedbackActivity"
+    tools:showIn="@layout/feedback">
+
+    <EditText
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
+        android:id="@+id/namedata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingLeft="15dp"
+        android:layout_marginRight="25dp"
+        android:hint="@string/name_or_nickname"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        app:layout_constraintTop_toBottomOf="@id/namedata"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginStart="10dp"
+        android:id="@+id/emaildata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_feedback"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        app:layout_constraintTop_toBottomOf="@id/emaildata"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:id="@+id/messagedata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="@string/message"
+        android:inputType="textMultiLine" />
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/messagedata"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/btn_send"
+        android:background="@drawable/ic_send_feedback_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="?attr/colorButtonNormal"
+        android:layout_marginTop="30dp"
+        android:text="@string/send_button" />
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/btn_send"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/btn_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_ignore_button"
+        android:layout_marginTop="10dp"
+        android:text="@string/more_info" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

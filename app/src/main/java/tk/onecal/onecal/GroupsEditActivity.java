@@ -89,7 +89,7 @@ public class GroupsEditActivity extends AppCompatActivity {
                 if (input.getText().toString().isEmpty() || input.getText().toString()==" "){
                     return;
                 }
-                if (input.getText().toString().contains("__,__")){
+                if (input.getText().toString().contains("__,__") || input.getText().toString().contains("null")){
                     Toast.makeText(getApplicationContext(), "This name contains a forbidden character sequence", Toast.LENGTH_LONG).show();
                     return;
                 }

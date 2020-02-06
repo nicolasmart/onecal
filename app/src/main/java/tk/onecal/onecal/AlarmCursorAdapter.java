@@ -15,7 +15,7 @@ import tk.onecal.onecal.data.AlarmReminderContract;
 
 public class AlarmCursorAdapter extends CursorAdapter {
 
-    private TextView mTitleText, mDateAndTimeText, mRepeatInfoText;
+    private TextView mTitleText, mDateAndTimeText, mRepeatInfoText, mInvisibleInfoText;
     private ImageView mImportanceImage;
     private ColorGenerator mColorGenerator = ColorGenerator.DEFAULT;
     private TextDrawable mDrawableBuilder;
@@ -36,6 +36,7 @@ public class AlarmCursorAdapter extends CursorAdapter {
         mTitleText = (TextView) view.findViewById(R.id.item_info);
         mDateAndTimeText = (TextView) view.findViewById(R.id.date_info);
         mRepeatInfoText = (TextView) view.findViewById(R.id.repeat_info);
+        mInvisibleInfoText = (TextView) view.findViewById(R.id.invisible_info);
         mImportanceImage = (ImageView) view.findViewById(R.id.busyview);
 
         int titleColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
@@ -46,7 +47,7 @@ public class AlarmCursorAdapter extends CursorAdapter {
         int repeatTypeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE);
         int activeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE);
         int importanceLevelColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL);
-        int groupColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_GROUP);
+        int taggedColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED);
 
         String title = cursor.getString(titleColumnIndex);
         String date = cursor.getString(dateColumnIndex);
@@ -56,7 +57,9 @@ public class AlarmCursorAdapter extends CursorAdapter {
         String repeatType = cursor.getString(repeatTypeColumnIndex);
         String active = cursor.getString(activeColumnIndex);
         String importanceLevel = cursor.getString(importanceLevelColumnIndex);
-        String group = cursor.getString(groupColumnIndex);
+        String tagged = cursor.getString(taggedColumnIndex);
+
+        mInvisibleInfoText.setText(tagged);
 
         mContext=context;
 

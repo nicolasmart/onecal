@@ -1,5 +1,6 @@
 package tk.onecal.onecal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
@@ -23,6 +24,7 @@ public class ScrollFABBehavior extends FloatingActionButton.Behavior {
                 || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onNestedScroll(final CoordinatorLayout coordinatorLayout, final FloatingActionButton child, final View target, final int dxConsumed, final int dyConsumed,final int dxUnconsumed, final int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);

@@ -22,11 +22,35 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ContactViewActivity"
+            android:label="@string/title_activity_contact_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".FeedbackActivity"
+            android:label="@string/feedback"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".AssignContactActivity"
             android:label="@string/title_activity_assign_contact"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TaggingContactActivity"
+            android:label="@string/title_activity_tag_contact"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TaggedPeopleViewActivity"
+            android:label="@string/tagged_contacts"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ArchivedEventsActivity"
+            android:label="@string/archived_events"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ArchivedPeopleActivity"
+            android:label="@string/archived_events"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
@@ -45,8 +69,6 @@
             android:label="@string/title_activity_add_reminder"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -81,6 +103,21 @@
             android:name=".ChatHeadService"
             android:enabled="true"
             android:exported="false" />
+
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_newcal_people" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
 
         <activity
             android:name=".PeopleActivity"

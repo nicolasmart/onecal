@@ -9,7 +9,7 @@ public class PeopleCustomDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "customcontacts.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public PeopleCustomDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,6 +23,7 @@ public class PeopleCustomDbHelper extends SQLiteOpenHelper {
                 + PeopleCustomContract.PeopleCustomEntry.KEY_DISPLAY_NAME + " TEXT, "
                 + PeopleCustomContract.PeopleCustomEntry.KEY_PHONE_NUMBER + " TEXT, "
                 + PeopleCustomContract.PeopleCustomEntry.KEY_PHOTO_URI + " TEXT, "
+                + PeopleCustomContract.PeopleCustomEntry.KEY_EVENTS + " TEXT, "
                 + PeopleCustomContract.PeopleCustomEntry.KEY_GROUP + " TEXT " +" );";
         sqLiteDatabase.execSQL(SQL_CREATE_CONTACTS_TABLE);
     }

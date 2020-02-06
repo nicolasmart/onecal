@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.provider.Settings;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +52,7 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -68,6 +71,8 @@ import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import tk.onecal.onecal.data.AlarmReminderContract;
 
@@ -101,6 +106,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(java.lang.Integer.toHexString(getIntent().getFlags()).equals("14000000"))
+        {
+            for (String key : getIntent().getExtras().keySet()) {
+                String value = getIntent().getExtras().getString(key);
+                Log.d("MainActivity", "Key: " + key + " Value: " + value);
+            }
+        }
+
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -147,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(Color.parseColor("#d73d31"), getResources().getColor(R.color.colorPrimaryDark));
-                else animateStatusBar(Color.parseColor("#e94d42"), getResources().getColor(R.color.colorPrimaryDark));
+                if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(Color.parseColor("#D84136"), getResources().getColor(R.color.colorPrimaryDark));
+                else animateStatusBar(Color.parseColor("#EC554C"), getResources().getColor(R.color.colorPrimaryDark));
             }
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -170,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 else if (newState==true) {
                     if (currentOpenState==0) {
-                        if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#d73d31"));
-                        else animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#e94d42"));
+                        if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#D84136"));
+                        else animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#EC554C"));
                     }
                     newState=false;
                 }
@@ -201,6 +214,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_cal);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView header = hView.findViewById(R.id.nav_header);
+        if (Locale.getDefault().getLanguage().contains("en")) header.setImageResource(R.drawable.onecal_header);
 
         aboutView = findViewById(R.id.about_view);
 
@@ -456,7 +473,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE, alarmTitle);
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_DATE, mDate);
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TIME, mTime);
-                values.put(AlarmReminderContract.AlarmReminderEntry.KEY_GROUP, tabPosition-1);
+                values.put(AlarmReminderContract.AlarmReminderEntry.KEY_GROUP, groupTabs[tabPosition-1]);
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL, getString(R.string.light_importance));
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO, "1");
                 values.put(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE, getString(R.string.repeat_day));
@@ -569,6 +586,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intentGroup);
             return true;
         }
+        if (id == R.id.action_archived) {
+            Intent intentGroup = new Intent(this, ArchivedEventsActivity.class);
+            leaveAlive();
+            startActivity(intentGroup);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -593,7 +616,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             return false;
         } else if (id == R.id.nav_feedback) {
-            drawer.closeDrawer(GravityCompat.START);
+            Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+            leaveAlive();
+            startActivity(intent);
+            return true;
         } else if (id == R.id.nav_about) {
             DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
             float dpHeight = displayMetrics.heightPixels / displayMetrics.density;

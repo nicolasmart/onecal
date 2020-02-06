@@ -71,23 +71,47 @@ public class AlarmFragment extends Fragment implements LoaderManager.LoaderCallb
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), AddReminderActivity.class);
+                TextView peopleTagged = view.findViewById(R.id.invisible_info);
+                TextView eventName = view.findViewById(R.id.item_info);
 
-                Uri currentVehicleUri = ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id);
+                final String peopleId = peopleTagged.getText().toString();
+                final String eventString = eventName.getText().toString();
 
-                intent.setData(currentVehicleUri);
+                if (peopleId.length()>0 && Character.isDigit(peopleId.charAt(0))) {
+                    Intent intent = new Intent(getActivity(), TaggedPeopleViewActivity.class);
 
-                Bundle b = new Bundle();
-                b.putString("tabName", tabName);
-                b.putString("uri", ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id).toString());
-                intent.putExtras(b);
+                    Uri currentVehicleUri = ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id);
 
-                SharedPreferences prefs = getActivity().getSharedPreferences("activityhandle", 0);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("killapp", 0);
-                editor.commit();
-                startActivity(intent);
+                    Bundle b = new Bundle();
+                    b.putString("people_id", peopleId);
+                    b.putString("event_name", eventString);
+                    b.putString("event_uri", currentVehicleUri.toString());
+                    intent.putExtras(b);
 
+                    SharedPreferences prefs = getActivity().getSharedPreferences("activityhandle", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("killapp", 0);
+                    editor.commit();
+                    startActivity(intent);
+
+                } else {
+                    Intent intent = new Intent(getActivity(), AddReminderActivity.class);
+
+                    Uri currentVehicleUri = ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id);
+
+                    intent.setData(currentVehicleUri);
+
+                    Bundle b = new Bundle();
+                    b.putString("tabName", tabName);
+                    b.putString("uri", ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, id).toString());
+                    intent.putExtras(b);
+
+                    SharedPreferences prefs = getActivity().getSharedPreferences("activityhandle", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("killapp", 0);
+                    editor.commit();
+                    startActivity(intent);
+                }
             }
         });
 
@@ -112,21 +136,23 @@ public class AlarmFragment extends Fragment implements LoaderManager.LoaderCallb
                 AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE,
                 AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE,
                 AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL,
-                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP
+                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP,
+                AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED,
+                AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED
 
         };
 
         if (tabPos==-1) return new CursorLoader(getActivity(),
                 AlarmReminderContract.AlarmReminderEntry.CONTENT_URI,
                 projection,
-                null,
+                AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED + " LIKE \"%false%\"",
                 null,
                 AlarmReminderContract.AlarmReminderEntry.KEY_DATE + " ASC, " + AlarmReminderContract.AlarmReminderEntry.KEY_TIME + " ASC");
 
         return new CursorLoader(getActivity(),
                 AlarmReminderContract.AlarmReminderEntry.CONTENT_URI,
                 projection,
-                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP + "=" + String.valueOf(tabPos),
+                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP + "= \"" + tabName + "\" AND " + AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED + " LIKE \"%false%\"",
                 null,
                 AlarmReminderContract.AlarmReminderEntry.KEY_DATE + " ASC, " + AlarmReminderContract.AlarmReminderEntry.KEY_TIME + " ASC");
 

@@ -49,6 +49,9 @@ public class AddReminderActivity extends AppCompatActivity implements
     private static final int EXISTING_VEHICLE_LOADER = 0;
 
 
+    private boolean newTimeSet = false;
+    private boolean newDateSet = false;
+    private boolean activeChanged = false;
     private Toolbar mToolbar;
     private EditText mTitleText;
     private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mImportanceLevel, mDetailsText;
@@ -66,6 +69,7 @@ public class AddReminderActivity extends AppCompatActivity implements
     private String mRepeatType;
     private String mActive;
     private String mTabName;
+    private String mPeopleSelected;
 
     private Uri mCurrentReminderUri;
     private boolean mVehicleHasChanged = false;
@@ -79,6 +83,7 @@ public class AddReminderActivity extends AppCompatActivity implements
     private static final String KEY_REPEAT_TYPE = "repeat_type_key";
     private static final String KEY_ACTIVE = "active_key";
     private static final String KEY_IMPORTANCE_LEVEL = "importance_level_selected";
+    private static final String KEY_PEOPLE_TAGGED = "people_selected";
 
 
     private static final long milMinute = 60000L;
@@ -134,6 +139,7 @@ public class AddReminderActivity extends AppCompatActivity implements
         mRepeatNo = Integer.toString(1);
         mRepeatType = getString(R.string.repeat_day);
         mImportanceLevel.setText(getString(R.string.light_importance));
+        mPeopleSelected = "";
 
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
@@ -199,6 +205,10 @@ public class AddReminderActivity extends AppCompatActivity implements
             mDetailsText.setText(mTabName);
 
             mActive = savedInstanceState.getString(KEY_ACTIVE);
+            mPeopleSelected = savedInstanceState.getString(KEY_PEOPLE_TAGGED);
+            newTimeSet = savedInstanceState.getBoolean("time_changed");
+            newDateSet = savedInstanceState.getBoolean("date_changed");
+            activeChanged = savedInstanceState.getBoolean("active_changed");
         }
 
         if (mActive.equals("false")) {
@@ -229,6 +239,35 @@ public class AddReminderActivity extends AppCompatActivity implements
         outState.putCharSequence(KEY_REPEAT_TYPE, mRepeatTypeText.getText());
         outState.putCharSequence(KEY_ACTIVE, mActive);
         outState.putCharSequence(KEY_IMPORTANCE_LEVEL, mImportanceLevel.getText());
+        outState.putCharSequence(KEY_PEOPLE_TAGGED, mPeopleSelected);
+        outState.putBoolean("time_changed", newTimeSet);
+        outState.putBoolean("date_changed", newDateSet);
+        outState.putBoolean("active_changed", activeChanged);
+    }
+
+    public void tagPeople(View v) {
+        if(mCurrentReminderUri == null){
+            return;
+        }
+        Intent intent = new Intent(this, TaggingContactActivity.class);
+        Bundle b = new Bundle();
+        b.putString("people_tagged", mPeopleSelected);
+        b.putString("group_name", mTabName);
+        intent.putExtras(b);
+
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String returnString = data.getStringExtra("new_people_tagged");
+                mPeopleSelected = returnString;
+            }
+        }
     }
 
     public void setTime(View v){
@@ -304,6 +343,8 @@ public class AddReminderActivity extends AppCompatActivity implements
             mFAB1.setVisibility(View.GONE);
             mFAB2.setVisibility(View.VISIBLE);
         }
+        newTimeSet = true;
+        if (!newDateSet) setDate(null);
     }
 
     @Override
@@ -314,6 +355,8 @@ public class AddReminderActivity extends AppCompatActivity implements
         mYear = year;
         mDate = dayOfMonth + "/" + monthOfYear + "/" + year;
         mDateText.setText(mDate);
+        newDateSet = true;
+        if (!newTimeSet) setTime(null);
     }
 
     public void selectFab1(View v) {
@@ -322,6 +365,7 @@ public class AddReminderActivity extends AppCompatActivity implements
         mFAB2 = (FloatingActionButton) findViewById(R.id.starred2);
         mFAB2.setVisibility(View.VISIBLE);
         mActive = "true";
+        activeChanged = true;
     }
 
     public void selectFab2(View v) {
@@ -330,6 +374,7 @@ public class AddReminderActivity extends AppCompatActivity implements
         mFAB1 = (FloatingActionButton) findViewById(R.id.starred1);
         mFAB1.setVisibility(View.VISIBLE);
         mActive = "false";
+        activeChanged = true;
     }
 
     public void onSwitchRepeat(View view) {
@@ -545,12 +590,14 @@ public class AddReminderActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
 
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE, mTitle);
-        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_DATE, mDate);
-        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TIME, mTime);
+        if (newDateSet) values.put(AlarmReminderContract.AlarmReminderEntry.KEY_DATE, mDate);
+        if (newTimeSet) values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TIME, mTime);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT, mRepeat);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO, mRepeatNo);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE, mRepeatType);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE, mActive);
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED, "false");
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED, mPeopleSelected);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL, mImportanceLevel.getText().toString());
 
 
@@ -606,16 +653,19 @@ public class AddReminderActivity extends AppCompatActivity implements
 
         if (mActive.equals("true")) {
             if (mRepeat.equals("true")) {
-                new AlarmScheduler().setRepeatAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri, mRepeatTime);
+                if ((newTimeSet && newDateSet) || (mActive=="true" && activeChanged)) {
+                    new AlarmScheduler().cancelAlarm(getApplicationContext(), mCurrentReminderUri);
+                    new AlarmScheduler().setRepeatAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri, mRepeatTime);
+                }
             } else if (mRepeat.equals("false")) {
-                new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
+                if ((newTimeSet && newDateSet) || (mActive=="true" && activeChanged)) {
+                    new AlarmScheduler().cancelAlarm(getApplicationContext(), mCurrentReminderUri);
+                    new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
+                }
             }
-
-            Toast.makeText(this, getString(R.string.alarm_time_is, selectedTimestamp),
-                    Toast.LENGTH_LONG).show();
         }
 
-        Toast.makeText(getApplicationContext(), "Saved to OneCal",
+        Toast.makeText(getApplicationContext(), getString(R.string.saved_to_onecal),
                 Toast.LENGTH_SHORT).show();
 
         SharedPreferences preferences = this.getSharedPreferences(
@@ -628,6 +678,7 @@ public class AddReminderActivity extends AppCompatActivity implements
             if (mRepeat.equals("true")) intent.putExtra(CalendarContract.Events.RRULE, "FREQ="+mRepeatType+";INTERVAL="+mRepeatNo);
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                     selectedTimestamp);
+
             startActivity(intent);
         }
 
@@ -655,7 +706,8 @@ public class AddReminderActivity extends AppCompatActivity implements
                 AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE,
                 AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE,
                 AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL,
-                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP
+                AlarmReminderContract.AlarmReminderEntry.KEY_GROUP,
+                AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED
         };
 
         return new CursorLoader(this,
@@ -680,6 +732,7 @@ public class AddReminderActivity extends AppCompatActivity implements
             int repeatTypeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE);
             int importanceLevelColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL);
             int groupColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_GROUP);
+            int peopleTaggedColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED);
 
             String title = cursor.getString(titleColumnIndex);
             String date = cursor.getString(dateColumnIndex);
@@ -689,9 +742,11 @@ public class AddReminderActivity extends AppCompatActivity implements
             String repeatType = cursor.getString(repeatTypeColumnIndex);
             String importanceLevel = cursor.getString(importanceLevelColumnIndex);
             String group = cursor.getString(groupColumnIndex);
+            String peopleTagged = cursor.getString(peopleTaggedColumnIndex);
 
             mDate = date;
             mTime = time;
+            mPeopleSelected = peopleTagged;
 
             mTitleText.setText(title);
             mDateText.setText(date);
@@ -711,10 +766,8 @@ public class AddReminderActivity extends AppCompatActivity implements
                 mRepeatSwitch.setChecked(true);
             }
 
-            if (mTabName.contains(getString(R.string.all_tab_name))) {
-                String[] groupNames = loadArray("names", getApplicationContext());
-                mDetailsText.setText(groupNames[Integer.valueOf(group)]);
-            }
+            mDetailsText.setText(group);
+            mTabName = group;
 
             mImportanceLevel.setText(importanceLevel);
 

@@ -9,8 +9,10 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/nav_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_header_height"
-        android:src="@drawable/onecal_header"/>
+        android:layout_height="141dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/onecal_header_text"/>
 
 </LinearLayout>

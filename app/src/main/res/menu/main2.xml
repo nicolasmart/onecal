@@ -11,4 +11,9 @@
         android:orderInCategory="101"
         android:title="@string/groups"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_archived"
+        android:orderInCategory="102"
+        android:title="@string/archived_events"
+        app:showAsAction="never" />
 </menu>

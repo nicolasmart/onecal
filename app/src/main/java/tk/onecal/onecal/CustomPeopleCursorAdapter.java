@@ -24,7 +24,7 @@ import tk.onecal.onecal.data.PeopleCustomContract;
 
 public class CustomPeopleCursorAdapter extends CursorAdapter {
 
-    private TextView mContactName, mContactPhoneNumber, mContactLabel;
+    private TextView mContactName, mContactPhoneNumber, mContactLabel, mNewContactId;
     private ImageView mContactImage;
 
     private Context mContext;
@@ -41,24 +41,44 @@ public class CustomPeopleCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         int nameColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_DISPLAY_NAME);
-        int phoneNumberColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_PHONE_NUMBER);
+        int contactIdColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_CONTACT_ID);
         int photoColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_PHOTO_URI);
         int labelColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry.KEY_GROUP);
+        int idColumnIndex = cursor.getColumnIndex(PeopleCustomContract.PeopleCustomEntry._ID);
 
-        String phoneNumber = cursor.getString(phoneNumberColumnIndex);
+        String contactId = cursor.getString(contactIdColumnIndex);
         String name = cursor.getString(nameColumnIndex);
         String label = cursor.getString(labelColumnIndex);
         String photoData = cursor.getString(photoColumnIndex);
+        String id = cursor.getString(idColumnIndex);
 
         mContactName = (TextView) view.findViewById(R.id.contact_name);
         mContactPhoneNumber = (TextView) view.findViewById(R.id.contact_phone_number);
         mContactLabel = (TextView) view.findViewById(R.id.contact_label);
+        mNewContactId = (TextView) view.findViewById(R.id.contact_invisible_id);
         mContactImage = (ImageView) view.findViewById(R.id.photoview);
 
         mContext=context;
 
         mContactName.setText(name);
-        mContactPhoneNumber.setText(phoneNumber);
+
+        Cursor cursor_phone = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = "
+                        + contactId, null, null);
+
+        if (cursor_phone.moveToFirst()) {
+            int colIdx1 = cursor_phone
+                    .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+            int colIdx2 = cursor_phone
+                    .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            mContactName.setText(cursor_phone.getString(colIdx1));
+            mContactPhoneNumber.setText(cursor_phone.getString(colIdx2));
+        }
+        cursor_phone.close();
+
+        mNewContactId.setText(contactId);
 
         String displaylist="";
         try {

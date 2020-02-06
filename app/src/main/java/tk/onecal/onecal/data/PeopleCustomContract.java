@@ -34,6 +34,7 @@ public class PeopleCustomContract {
         public static final String KEY_DISPLAY_NAME = "display_name";
         public static final String KEY_PHOTO_URI = "photo_uri";
         public static final String KEY_PHONE_NUMBER = "phone_number";
+        public static final String KEY_EVENTS = "events";
 
 
     }

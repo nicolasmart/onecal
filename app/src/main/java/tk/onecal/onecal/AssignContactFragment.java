@@ -61,12 +61,6 @@ public class AssignContactFragment extends Fragment implements LoaderManager.Loa
         peopleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-
-
-
-
-
                 if (view != null) {
                     CheckBox checkBox = (CheckBox)view.findViewById(R.id.mark_contact);
                     checkBox.setChecked(!checkBox.isChecked());
@@ -89,9 +83,11 @@ public class AssignContactFragment extends Fragment implements LoaderManager.Loa
 
         String[] projection = {
                 ContactsContract.CommonDataKinds.Phone._ID,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                 ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY,
                 ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI,
                 ContactsContract.CommonDataKinds.Phone.LABEL
         };
@@ -111,9 +107,11 @@ public class AssignContactFragment extends Fragment implements LoaderManager.Loa
 
         String[] projection = {
                 ContactsContract.CommonDataKinds.Phone._ID,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                 ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_PRIMARY,
                 ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI,
                 ContactsContract.CommonDataKinds.Phone.LABEL
         };
@@ -123,11 +121,11 @@ public class AssignContactFragment extends Fragment implements LoaderManager.Loa
         cursor.moveToFirst();
 
         while(!cursor.isAfterLast()){
-            String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
+            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
 
-            if (normalizedNumbersAlreadyFound.add(phoneNumber))
+            if (normalizedNumbersAlreadyFound.add(contactId))
             {
-                newCursor.addRow(new Object[]{cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)});
+                newCursor.addRow(new Object[]{cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7)});
             }
 
             cursor.moveToNext();

@@ -8,7 +8,7 @@ public class AlarmReminderDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "alarmreminder.db";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public AlarmReminderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,6 +27,8 @@ public class AlarmReminderDbHelper extends SQLiteOpenHelper {
                 + AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE + " TEXT, "
                 + AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE + " TEXT, "
                 + AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL + " TEXT, "
+                + AlarmReminderContract.AlarmReminderEntry.KEY_PEOPLE_TAGGED + " TEXT, "
+                + AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED + " TEXT DEFAULT \"false\", "
                 + AlarmReminderContract.AlarmReminderEntry.KEY_GROUP + " TEXT " +" );";
         sqLiteDatabase.execSQL(SQL_CREATE_ALARM_TABLE);
     }
