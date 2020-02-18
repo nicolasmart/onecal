@@ -41,10 +41,6 @@ public class AssignContactActivity extends AppCompatActivity {
             groupName = (String) savedInstanceState.getSerializable("groupname");
         }
 
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("contactgrouping", 0);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("groupname", groupName);
-        editor.commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);

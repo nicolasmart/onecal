@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
             calendarMode.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (peopleFingerprint.isChecked()) {
+                    if (calendarMode.isChecked()) {
                         editor.putBoolean("calendar_mode", true);
                     } else {
                         editor.putBoolean("calendar_mode", false);

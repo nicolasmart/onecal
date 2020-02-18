@@ -358,6 +358,10 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
                 Toast.makeText(this, getString(R.string.select_group_first), Toast.LENGTH_LONG).show();
                 return false;
             }
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences("contactgrouping", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("groupname", groupTabs[tabPosition-1]);
+            editor.commit();
             intentGroup.putExtra("groupname", groupTabs[tabPosition-1]);
             leaveAlive();
             startActivity(intentGroup);
