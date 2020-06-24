@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -18,10 +19,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ChatHeadService extends Service {			
 	private WindowManager windowManager;
@@ -33,6 +36,7 @@ public class ChatHeadService extends Service {
 	private Point szWindow = new Point();
 	private boolean isLeft = true;
 	private String sMsg = "";
+	private String location="";
 
 	public static String LogTag = "ChatHeadService";
     public static String EXTRA_MSG = "extra_msg";
@@ -226,6 +230,8 @@ public class ChatHeadService extends Service {
 
 		txtView.setVisibility(View.GONE);
 		windowManager.addView(txtView, paramsTxt);
+
+		getDirections();
 	}
 
 
@@ -290,7 +296,7 @@ public class ChatHeadService extends Service {
 
 			}
 		} catch (Exception ex) {
-			Log.v("ChatHeadService", "crashes animation on leave :/");
+			Log.v("ChatHeadService", ex.getMessage());
 		}
 
     }
@@ -349,6 +355,7 @@ public class ChatHeadService extends Service {
 	
 	private void chathead_click(){
 		Intent it = new Intent(this,AnnoyingAlarmActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		it.putExtra("chathead", true);
 		startActivity(it);
 		stopService(new Intent(ChatHeadService.this, ChatHeadService.class));
 
@@ -369,7 +376,7 @@ public class ChatHeadService extends Service {
 	
 	private void showMsg(String sMsg){
 		if(txtView != null && chatheadView != null ){
-			Log.d(LogTag, "ChatHeadService.showMsg -> sMsg=" + sMsg);
+			//Log.d(LogTag, "ChatHeadService.showMsg -> sMsg=" + sMsg);
 			txt1.setText(sMsg);
 			myHandler.removeCallbacks(myRunnable);
 			
@@ -418,8 +425,12 @@ public class ChatHeadService extends Service {
 		if(intent != null){
 			Bundle bd = intent.getExtras();
 
-			if(bd != null)
-				sMsg = bd.getString(EXTRA_MSG);
+			if(bd != null) {
+				try {
+					sMsg = bd.getString(EXTRA_MSG);
+					location = bd.getString("location");
+				} catch (Exception ex) {}
+			}
 
 			if(sMsg != null && sMsg.length() > 0){
 				if(startId == Service.START_STICKY){
@@ -437,6 +448,7 @@ public class ChatHeadService extends Service {
 
 			}
 
+
 		}
 
 		if(startId == Service.START_STICKY) {
@@ -446,6 +458,22 @@ public class ChatHeadService extends Service {
 			return  Service.START_NOT_STICKY;
 		}
 
+	}
+
+	public void getDirections() {
+		if (location != null) {
+			if (location.length() > 0) {
+				String map = "http://maps.google.com/maps?q=" + location;
+
+				Uri gmmIntentUri = Uri.parse(map);
+				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+				mapIntent.setPackage("com.google.android.apps.maps");
+				mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				if (mapIntent.resolveActivity(getPackageManager()) != null) {
+					//startActivity(mapIntent);
+				}
+			}
+		}
 	}
 	
 	@Override

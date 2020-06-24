@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -39,6 +40,12 @@ public class TaggingContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_contact);
+
+        final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().setBackgroundDrawableResource(R.drawable.dark_bg_drawable);
+        }
+
         Bundle extras = getIntent().getExtras();
         peopleSelected = extras.getString("people_tagged", null);
         groupName = extras.getString("group_name", null);

@@ -31,7 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_newcal"/>
+                android:src="@drawable/ic_newcal"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
 
         </androidx.appcompat.widget.Toolbar>
 

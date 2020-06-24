@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">1Cal</string>
+    <string name="app_name">OneCal</string>
     <string name="action_settings">Settings</string>
 
     <string name="no_cardetails">Click on the button below to begin creating your reminder!</string>
@@ -111,7 +111,7 @@
     <string name="ignore">Ignore for now</string>
     <string name="dont_forget">Don\'t forget your events!</string>
 
-    <string name="about_text1">An app to help you organize your daily life with less of a hassle. This is 1Cal. This app is a project, participating in SoftUniada.  Developed by Nicola Nicolov and Ognyan Arsov.</string>
+    <string name="about_text1">An app to help you organize your daily life with less of a hassle. This is 1Cal. This app is a project, participating in the National IT Olympiad (Bulgaria). Developed by Nicola Nicolov and Ognyan Arsov.</string>
     <string name="close_window">Close</string>
     <string name="go_back">Back</string>
 
@@ -159,4 +159,68 @@
     <string name="email_feedback">E-mail Address</string>
     <string name="send_button">Send</string>
     <string name="more_info">Learn More</string>
+    <string name="qr_code_generate">Generate QR Code</string>
+    <string name="fingerprint_exit">Exit</string>
+    <string name="fingerprint_desc_settings">To change this setting, you must confirm via biometrics.</string>
+    <string name="fingerprint_subtitle_settings">Security Settings</string>
+    <string name="forbidden_chars_group_name">This name contains a forbidden character sequence</string>
+    <string name="problem_text_detection">There was a problem in detecting text.</string>
+    <string name="set_a_reminder_voice">set a reminder</string>
+    <string name="for_time">for</string>
+    <string name="with_title">titled</string>
+    <string name="one_number">one</string>
+    <string name="two_number">two</string>
+    <string name="three_number">three</string>
+    <string name="four_number">four</string>
+    <string name="five_number">five</string>
+    <string name="six_number">six</string>
+    <string name="seven_number">seven</string>
+    <string name="eight_number">eight</string>
+    <string name="nine_number">nine</string>
+    <string name="ten_number">ten</string>
+    <string name="eleven_number">eleven</string>
+    <string name="twelve_number">twelve</string>
+    <string name="and_a_half">and a half</string>
+    <string name="am_time">a.m.</string>
+    <string name="pm_time">p.m.</string>
+    <string name="repeat_until">Repeat Until</string>
+    <string name="and_call">and call</string>
+    <string name="open_contacts">open contacts</string>
+    <string name="open_settings">open settings</string>
+    <string name="and_show">and show</string>
+    <string name="invalid_command">Wrong or invalid voice command</string>
+    <string name="general">General</string>
+    <string name="use_light_icon_summary">By default OneCal uses a dark home screen icon but you can change it to the light variant by enabling this switch</string>
+    <string name="use_light_icon">Use Light app icon</string>
+    <string name="smart_config_summary">When enabled, Smart Config automatically checks for parallel events, and reminds you if you\'re trying to set a reminder for a busy time period. (Might affect performance)</string>
+    <string name="smart_config_title">Smart Config</string>
+    <string name="full_screen_notifications_summary">Full Screen notifications intrude your screen, so that you never miss important events. It slowly increases your alarm volume and even vibrates, in case you don\'t notice it. Disabling this feature provides a limited experience.</string>
+    <string name="full_screen_notifications_title">Full Screen Notifications</string>
+    <string name="empty_location">Leave blank to disable, tap icon for current</string>
+    <string name="location_permission_needed">Location permission is necessary to gain current location</string>
+    <string name="directions">Get directions</string>
+    <string name="directions_selected">Directions Enabled</string>
+    <string name="engaged_already">You\'re busy at that time. Continue anyway?</string>
+    <string name="the_selected_time_sc">The selected time period is already filled with the event </string>
+    <string name="length">Event length</string>
+    <string name="default_length">1 hour</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+    <string name="separator_length"> </string>
+    <string name="set_length_title">Event length:</string>
+    <string name="set_length_summary">Enter the length in minutes</string>
+    <string name="length_not_set">Disabled</string>
+    <string name="will_ignore_length">Smart Config will ignore this event</string>
+    <string name="disable_length">Disable</string>
+    <string name="delayed_start_summary">This features allows you to be reminded of an important event before it happens, so that you get a live timer of how much time you have left to get there.</string>
+    <string name="delayed_start_title">Early Start</string>
+    <string name="set_delay_summary">Enter delay in minutes</string>
+    <string name="set_delay_message">You will receive the reminder earlier than the event by the amount of minutes you enter.</string>
+    <string name="delay_ignore">Dismiss / Ignore</string>
+    <string name="dismiss_timer"><![CDATA[Stop timer & Complete]]></string>
+    <string name="gradient_sound_title">Gradient Sound System</string>
+    <string name="gradient_sound_summary">During full screen notifications, gradient sound will gradually increase your alarm tone, just in case you don\'t hear it the first time</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="location">Location</string>
+    <string name="camera">Camera</string>
 </resources>

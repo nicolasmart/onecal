@@ -35,11 +35,24 @@ public class AlarmReminderContract {
         public static final String KEY_REPEAT = "repeat";
         public static final String KEY_REPEAT_NO = "repeat_no";
         public static final String KEY_REPEAT_TYPE = "repeat_type";
+        public static final String KEY_REPEAT_UNTIL = "repeat_until";
         public static final String KEY_ACTIVE = "active";
         public static final String KEY_GROUP = "group_name";
         public static final String KEY_IMPORTANCE_LEVEL = "importance_level";
         public static final String KEY_PEOPLE_TAGGED = "people_tagged";
         public static final String KEY_ARCHIVED = "archived";
+        public static final String KEY_LOCATION = "location";
+        public static final String KEY_LENGTH = "length";
+        public static final String KEY_STARTS_AFTER = "starts_after";
+
+        public static final String UPGRADE_2_TO_3_QUERY = "ALTER TABLE "
+                + TABLE_NAME + " ADD COLUMN " + KEY_REPEAT_UNTIL + " string;";
+        public static final String UPGRADE_3_TO_4_QUERY = "ALTER TABLE "
+                + TABLE_NAME + " ADD COLUMN " + KEY_LOCATION + " string;";
+        public static final String UPGRADE_4_TO_5_QUERY = "ALTER TABLE "
+                + TABLE_NAME + " ADD COLUMN " + KEY_LENGTH + " string;";
+        public static final String UPGRADE_5_TO_6_QUERY = "ALTER TABLE "
+                + TABLE_NAME + " ADD COLUMN " + KEY_STARTS_AFTER + " string;";
 
     }
 

@@ -16,15 +16,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:paddingLeft="15dp"
-        android:layout_marginRight="25dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginEnd="10dp"
         android:hint="@string/name_or_nickname"
         android:layout_marginTop="10dp"/>
 
     <EditText
         app:layout_constraintTop_toBottomOf="@id/namedata"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:id="@+id/emaildata"
         android:layout_width="match_parent"
@@ -36,8 +38,9 @@
 
     <EditText
         app:layout_constraintTop_toBottomOf="@id/emaildata"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginEnd="10dp"
         android:id="@+id/messagedata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

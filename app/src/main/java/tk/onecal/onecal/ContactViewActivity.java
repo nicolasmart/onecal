@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,10 +46,6 @@ import java.util.List;
 
 public class ContactViewActivity extends AppCompatActivity {
 
-    /** TODO: The idea is that this implements the function addReminder from MainActivity
-              except it tags the selected person. Implementing tagging is necessary for this tho.
-              Also: We need dem Archived Events*/
-
     TextView contactName, contactPhone, contactEmail;
     String contactID, groupName;
     int tabPosition;
@@ -60,6 +57,12 @@ public class ContactViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_view);
+
+        final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().setBackgroundDrawableResource(R.drawable.dark_bg_drawable);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -104,7 +107,7 @@ public class ContactViewActivity extends AppCompatActivity {
         contactEmail.setText(email);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        if (groupName=="null") fab.setVisibility(View.GONE);
+        if (groupName.contains("null")) fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

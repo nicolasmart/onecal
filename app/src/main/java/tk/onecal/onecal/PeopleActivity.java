@@ -89,6 +89,10 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        window3 = getWindow();
+        window3.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window3.setStatusBarColor(getColor(R.color.colorAccentPeople));
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
                 Toast.makeText(this, getString(R.string.contact_permission_needed), Toast.LENGTH_LONG).show();
@@ -136,16 +140,16 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
             final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
                 public void onDrawerClosed(View view) {
                     super.onDrawerClosed(view);
-                    if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(Color.parseColor("#D84136"), getResources().getColor(R.color.colorPrimaryDark));
-                    else animateStatusBar(Color.parseColor("#EC554C"), getResources().getColor(R.color.colorPrimaryDark));
+                    if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorAccent), getResources().getColor(R.color.colorAccentPeople));
+                    else animateStatusBar(getResources().getColor(R.color.colorAccent), getResources().getColor(R.color.colorAccentPeople));
                 }
 
                 public void onDrawerOpened(View drawerView) {
@@ -164,8 +168,8 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
                         newState = true;
                     } else if (newState == true) {
                         if (currentOpenState == 0) {
-                            if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#D84136"));
-                            else animateStatusBar(getResources().getColor(R.color.colorPrimaryDark), Color.parseColor("#EC554C"));
+                            if (currentNightMode==Configuration.UI_MODE_NIGHT_YES) animateStatusBar(getResources().getColor(R.color.colorAccentPeople), getResources().getColor(R.color.colorAccent));
+                            else animateStatusBar(getResources().getColor(R.color.colorAccentPeople), getResources().getColor(R.color.colorAccent));
                         }
                         newState = false;
                     }
@@ -196,9 +200,14 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
 
             View hView =  navigationView.getHeaderView(0);
             ImageView header = hView.findViewById(R.id.nav_header);
-            if (Locale.getDefault().getLanguage().contains("en")) header.setImageResource(R.drawable.onecal_header);
+            //if (Locale.getDefault().getLanguage().contains("en")) header.setImageResource(R.drawable.onecal_header);
 
             aboutView = findViewById(R.id.about_view);
+
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                getWindow().setBackgroundDrawableResource(R.drawable.dark_bg_drawable);
+                navigationView.setBackgroundResource(R.drawable.dark_bg_drawable);
+            }
         }
     }
 
@@ -231,7 +240,6 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
 
     public void animateStatusBar(Integer from, Integer to)
     {
-        window3 = getWindow();
         window3.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         ValueAnimator colorAnimation = ValueAnimator.ofArgb(from, to);
         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -277,7 +285,7 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
         Bundle args = new Bundle();
         args.putInt("tabPosition", tabPosition);
         if (tabPosition != -1) args.putString("tabName", groupTabs[tabPosition]);
-        else args.putString("tabName", "All");
+        else args.putString("tabName", getString(R.string.all_tab_name));
         f.setArguments(args);
         adapter.addFragment(f, tabName);
         return f;
@@ -289,7 +297,7 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
         Bundle args = new Bundle();
         args.putInt("tabPosition", tabPosition);
         if (tabPosition != -1) args.putString("tabName", groupTabs[tabPosition]);
-        else args.putString("tabName", "All");
+        else args.putString("tabName", getString(R.string.all_tab_name));
         f.setArguments(args);
         adapter.addFragment(f, tabName);
         return f;
@@ -486,12 +494,12 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
                 .setSubtitle(getString(R.string.people_fingerprint_subtitle))
                 .setDescription(getString(R.string.fingerprint_desc))
                 .setNegativeButton(
-                        "Exit",
+                        getString(R.string.fingerprint_exit),
                         this.getMainExecutor(),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                System.exit(1);
+                                finish();
                             }
                         }
                 )
@@ -525,7 +533,7 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
                     mAppBarLayout.setOutlineProvider(ViewOutlineProvider.BOUNDS);
                     return;
                 }
-                System.exit(1);
+                finish();
             }
 
             @Override
@@ -540,7 +548,7 @@ public class PeopleActivity extends AppCompatActivity implements NavigationView.
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                System.exit(1);
+                finish();
             }
         };
         if (mCancellationSignal == null) {

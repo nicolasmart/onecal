@@ -70,13 +70,6 @@ public class TaggingContactCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 box = (CheckBox) v.findViewById(R.id.mark_contact);
                 box.setChecked(!box.isChecked());
-                /**if (box.isChecked()) {
-                    saveToArray(idOfContacts.get(position), "assignlist", context);
-                }
-                else {
-
-                }*/
-
             }
         });
         return v;
@@ -103,8 +96,7 @@ public class TaggingContactCursorAdapter extends CursorAdapter {
             idOfContacts.add(id);
         }
 
-        /// TODO: Fix tagged people recovery
-        if (selectedItemsPositions.contains(cursor.getPosition())/** || (invisibleId.getText()!="true" && prefs.getString("people_tagged", "").contains(id))*/) {
+        if (selectedItemsPositions.contains(cursor.getPosition())) {
             box_bind.setChecked(true);
         }
         else {

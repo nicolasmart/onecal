@@ -80,8 +80,6 @@ public class AlarmCursorAdapter extends CursorAdapter {
 
         if (active != null){
             setActiveImage(active, importanceLevel);
-        }else{
-            mImportanceImage.setVisibility(View.GONE);
         }
     }
 
@@ -105,16 +103,16 @@ public class AlarmCursorAdapter extends CursorAdapter {
         if(active.equals("true")){
             mImportanceImage.setVisibility(View.VISIBLE);
             if (importanceLevel.contains(mContext.getString(R.string.medium_importance))){
-                mImportanceImage.setImageResource(R.drawable.yellow_bar);
+                mImportanceImage.setImageResource(R.drawable.yellow_circle);
             }
             else if (importanceLevel.contains(mContext.getString(R.string.urgent_importance))){
-                mImportanceImage.setImageResource(R.drawable.red_bar);
+                mImportanceImage.setImageResource(R.drawable.red_circle);
             }
             else{
-                mImportanceImage.setImageResource(R.drawable.green_bar);
+                mImportanceImage.setImageResource(R.drawable.green_circle);
             }
         }else if (active.equals("false")) {
-            mImportanceImage.setVisibility(View.GONE);
+            mImportanceImage.setImageResource(R.drawable.blank_circle);
         }
 
     }

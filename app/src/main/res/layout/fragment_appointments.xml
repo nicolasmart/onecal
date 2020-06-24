@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:paddingTop="5dp"
-        android:paddingStart="40dp"
+        android:paddingStart="55sp"
         android:text="Title"
         android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -19,7 +19,7 @@
         android:id="@+id/date_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="40dp"
+        android:paddingStart="55sp"
         android:textSize="16sp"
         android:paddingBottom="0dp"
         android:layout_marginBottom="0dp"
@@ -35,7 +35,7 @@
         android:paddingBottom="8dp"
         android:layout_marginTop="0dp"
         android:textSize="16sp"
-        android:paddingStart="40dp"
+        android:paddingStart="55sp"
         app:layout_constraintTop_toBottomOf="@+id/date_info"
         android:text="Additional info"
         android:textAppearance="?attr/textAppearanceListItem" />
@@ -46,15 +46,19 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         app:layout_constraintRight_toLeftOf="@id/busyview"
+        android:paddingRight="40sp"
+        android:paddingLeft="40sp"
         android:text="Additional info"
         android:textAppearance="?attr/textAppearanceListItem"
         android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/busyview"
-        android:layout_width="12.5dp"
-        android:layout_height="82.5sp"
-        android:src="@drawable/green_bar"
+        android:paddingStart="20sp"
+        android:layout_width="35sp"
+        android:layout_height="15sp"
+        android:src="@drawable/green_circle"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />

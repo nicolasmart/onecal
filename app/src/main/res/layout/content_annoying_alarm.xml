@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".AnnoyingAlarmActivity"
     android:id="@+id/annoying_view"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/transparent"
     tools:showIn="@layout/activity_annoying_alarm">
 
     <TextView
@@ -19,6 +19,8 @@
         app:layout_constraintBottom_toTopOf="@id/title_final"
         android:paddingBottom="7dp"
         android:textSize="18sp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/groups"/>
 
     <TextView
@@ -31,6 +33,9 @@
         android:text="@string/reminder_title_blank"
         android:paddingBottom="7dp"
         app:layout_constraintBottom_toTopOf="@id/importance_text_final"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textStyle="bold"
         />
 
     <TextView
@@ -45,17 +50,42 @@
         android:text="@string/importance"
         />
 
-    <ImageView
+    <TextClock
         android:id="@+id/thumb"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
+        android:textColor="#fff"
         android:layout_height="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
         app:layout_constraintDimensionRatio="1:1"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_newcal"/>
+        android:format12Hour="hh:mm"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="100dp"
+        android:paddingBottom="80sp"/>
+
+    <TextView
+        android:id="@+id/thumb2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:textColor="#fff"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="fitCenter"
+        android:format12Hour="hh:mm"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="100dp"
+        android:paddingBottom="80sp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/dismiss_button"
@@ -92,5 +122,23 @@
         android:layout_marginRight="20dp"
         android:textColor="#fff"
         android:text="@string/ignore"/>
+
+    <Button
+        android:id="@+id/directions_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@id/dismiss_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:background="@drawable/ic_ignore_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#fff"
+        android:text="@string/directions"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

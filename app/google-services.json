@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "319726543786",
+    "firebase_url": "https://onecal-f3ef9.firebaseio.com",
+    "project_id": "onecal-f3ef9",
+    "storage_bucket": "onecal-f3ef9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319726543786:android:674dfc1911947d474c41d3",
+        "android_client_info": {
+          "package_name": "tk.onecal.onecal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319726543786-l087n2cj30gtv490kal19t003pcuq9lm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tk.onecal.onecal",
+            "certificate_hash": "9a89a6998cb500efdf6f847ca0b2637e77ca84bd"
+          }
+        },
+        {
+          "client_id": "319726543786-7fsdv54jt8nlm3r6m8m40r88t2gactgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMow9IvqYdjX5dGUEhE9c45bQ76t70bqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319726543786-7fsdv54jt8nlm3r6m8m40r88t2gactgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

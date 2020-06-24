@@ -57,9 +57,6 @@ public class ArchivedPeopleFragment extends Fragment implements LoaderManager.Lo
         tabName = args.getString("tabName", null);
     }
 
-    /** TODO: Redesign the way this works; dynamically fetch actual number and e-mail - partly done
-              Now we need to do the same for name too*/
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

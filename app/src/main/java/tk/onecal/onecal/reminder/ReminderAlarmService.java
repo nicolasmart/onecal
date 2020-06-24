@@ -12,6 +12,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.text.TextUtils;
+
+import org.w3c.dom.Text;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -21,10 +24,12 @@ import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import tk.onecal.onecal.AddReminderActivity;
 import tk.onecal.onecal.AnnoyingAlarmActivity;
 import tk.onecal.onecal.MainActivity;
+import tk.onecal.onecal.SettingsActivity;
 import tk.onecal.onecal.data.AlarmReminderContract;
 
 import tk.onecal.onecal.R;
@@ -137,18 +142,25 @@ public class ReminderAlarmService extends IntentService {
 
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
+        SharedPreferences appPrefs = getApplicationContext().getSharedPreferences(SettingsActivity.SettingsFragment.SETTINGS_SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+
         String description = "";
         String importanceLevel = "";
         String group = "";
         String id = "";
+        String repeatType = "";
+        String location = "";
+        String delay = "";
 
-        /// TODO: Manual Archiving in AddReminderActivity
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 description = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
                 importanceLevel = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_IMPORTANCE_LEVEL);
                 group = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_GROUP);
                 id = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry._ID);
+                repeatType = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE);
+                location = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_LOCATION);
+                delay = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_STARTS_AFTER);
 
                 if (AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT).contains("false")) {
                     try {
@@ -156,6 +168,35 @@ public class ReminderAlarmService extends IntentService {
                         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_ARCHIVED, "true");
                         Uri currUri = Uri.parse(ContentUris.withAppendedId(AlarmReminderContract.AlarmReminderEntry.CONTENT_URI, Integer.valueOf(id)).toString());
                         getContentResolver().update(currUri, values, null, null);
+
+                        notification(description, importanceLevel + " (" + group + ")", getApplicationContext());
+
+                        if (appPrefs.getBoolean("annoying_notifications", true)) {
+                            Intent annoyingNotification = new Intent(this, AnnoyingAlarmActivity.class);
+                            annoyingNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(annoyingNotification);
+                        }
+
+                        String[] eventTitles = loadArray("name", getApplicationContext());
+                        String[] eventImportances = loadArray("importance", getApplicationContext());
+                        String[] eventGroups = loadArray("group", getApplicationContext());
+                        String[] eventLocations = loadArray("location", getApplicationContext());
+                        String[] eventNotifyId = loadArray("notification", getApplicationContext());
+                        String[] eventDelays = loadArray("delay", getApplicationContext());
+
+                        eventTitles[eventTitles.length - 1] = description;
+                        eventImportances[eventImportances.length - 1] = importanceLevel;
+                        eventLocations[eventLocations.length - 1] = location;
+                        eventGroups[eventGroups.length - 1] = group;
+                        eventNotifyId[eventNotifyId.length - 1] = String.valueOf(notificationId);
+                        eventDelays[eventDelays.length - 1] = delay;
+
+                        saveArray(eventTitles, "name", getApplicationContext());
+                        saveArray(eventImportances, "importance", getApplicationContext());
+                        saveArray(eventGroups, "group", getApplicationContext());
+                        saveArray(eventLocations, "location", getApplicationContext());
+                        saveArray(eventNotifyId, "notification", getApplicationContext());
+                        saveArray(eventDelays, "delay", getApplicationContext());
                     } catch (Exception ex) {
 
                     }
@@ -167,26 +208,47 @@ public class ReminderAlarmService extends IntentService {
             }
         }
 
-        notification(description, importanceLevel + " (" + group + ")", getApplicationContext());
+        ///TODO: Not add already existing titles, and also prevent old non-repeated reminders from appearing (the last one I'm not sure about)
 
-        String[] eventTitles = loadArray("name", getApplicationContext());
-        String[] eventImportances = loadArray("importance", getApplicationContext());
-        String[] eventGroups = loadArray("group", getApplicationContext());
-        String[] eventNotifyId = loadArray("notification", getApplicationContext());
+        if (repeatType.contains(getString(R.string.repeat_minute)) || repeatType.contains(getString(R.string.repeat_hour)))
+        {
+            long time_now = System.currentTimeMillis(), time_duration;
+            time_now = time_now/60000;
+            String time_dur = AlarmReminderContract.getColumnString(cursor, AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_UNTIL);
+            time_duration = Integer.parseInt(time_dur.substring(0, 2))*60 + Integer.parseInt(time_dur.substring(3));
 
-        eventTitles[eventTitles.length-1] = description;
-        eventImportances[eventImportances.length-1]=importanceLevel;
-        eventGroups[eventGroups.length-1]=group;
-        eventNotifyId[eventNotifyId.length-1]=String.valueOf(notificationId);
 
-        saveArray(eventTitles, "name", getApplicationContext());
-        saveArray(eventImportances, "importance", getApplicationContext());
-        saveArray(eventGroups, "group", getApplicationContext());
-        saveArray(eventNotifyId, "notification", getApplicationContext());
+            if (time_duration>=time_now) {
+                notification(description, importanceLevel + " (" + group + ")", getApplicationContext());
 
-        Intent annoyingNotification = new Intent(this, AnnoyingAlarmActivity.class);
-        annoyingNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(annoyingNotification);
+                String[] eventTitles = loadArray("name", getApplicationContext());
+                String[] eventImportances = loadArray("importance", getApplicationContext());
+                String[] eventGroups = loadArray("group", getApplicationContext());
+                String[] eventLocations = loadArray("location", getApplicationContext());
+                String[] eventNotifyId = loadArray("notification", getApplicationContext());
+                String[] eventDelays = loadArray("delay", getApplicationContext());
+
+                eventTitles[eventTitles.length - 1] = description;
+                eventImportances[eventImportances.length - 1] = importanceLevel;
+                eventLocations[eventLocations.length - 1] = location;
+                eventGroups[eventGroups.length - 1] = group;
+                eventNotifyId[eventNotifyId.length - 1] = String.valueOf(notificationId);
+                eventDelays[eventDelays.length - 1] = delay;
+
+                saveArray(eventTitles, "name", getApplicationContext());
+                saveArray(eventImportances, "importance", getApplicationContext());
+                saveArray(eventGroups, "group", getApplicationContext());
+                saveArray(eventLocations, "location", getApplicationContext());
+                saveArray(eventNotifyId, "notification", getApplicationContext());
+                saveArray(eventDelays, "delay", getApplicationContext());
+
+                if (appPrefs.getBoolean("annoying_notifications", true)) {
+                    Intent annoyingNotification = new Intent(this, AnnoyingAlarmActivity.class);
+                    annoyingNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(annoyingNotification);
+                }
+            }
+        }
 
     }
 }

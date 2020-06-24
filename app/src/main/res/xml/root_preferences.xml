@@ -17,6 +17,17 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory app:title="@string/general">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="use_light_icon"
+            app:summary="@string/use_light_icon_summary"
+            app:title="@string/use_light_icon" />
+
+    </PreferenceCategory>
+
+
     <PreferenceCategory app:title="@string/events">
 
         <SwitchPreferenceCompat
@@ -28,9 +39,27 @@
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
+            app:key="gradient_sound"
+            app:summary="@string/gradient_sound_summary"
+            app:title="@string/gradient_sound_title" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="smart_config"
+            app:summary="@string/smart_config_summary"
+            app:title="@string/smart_config_title" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:key="calendar_mode"
             app:summary="@string/calendar_mode_summary"
             app:title="@string/calendar_mode_title" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="delayed_start"
+            app:summary="@string/delayed_start_summary"
+            app:title="@string/delayed_start_title" />
 
     </PreferenceCategory>
 

@@ -1,21 +1,6 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="44dp"
-    android:height="40dp"
-    android:viewportWidth="88"
-    android:viewportHeight="78">
-  <path
-      android:pathData="M24.474,12.4C24.9807,12.4253 25.386,12.6153 25.69,12.97C26.0193,13.2993 26.184,13.7173 26.184,14.224V37.176C26.184,37.6827 25.994,38.1133 25.614,38.468C25.234,38.8227 24.7653,39 24.208,39C23.6507,39 23.1947,38.8227 22.84,38.468C22.4853,38.1133 22.308,37.6827 22.308,37.176V17.416L18.964,19.43C18.6853,19.6073 18.3687,19.696 18.014,19.696C17.5073,19.696 17.0767,19.506 16.722,19.126C16.3673,18.7207 16.19,18.29 16.19,17.834C16.19,17.53 16.2787,17.2387 16.456,16.96C16.6333,16.6813 16.8613,16.4533 17.14,16.276L23.144,12.666C23.4987,12.4887 23.942,12.4 24.474,12.4Z"
-      android:fillColor="#ffffff"/>
-  <path
-      android:pathData="M52,32m-17.5,0a17.5,17.5 0,1 1,35 0a17.5,17.5 0,1 1,-35 0"
-      android:strokeWidth="5"
-      android:fillColor="#00000000"
-      android:strokeColor="#ffffff"/>
-  <path
-      android:pathData="M24,75C33.4828,51.4872 68.0948,47.9092 79,75"
-      android:strokeLineJoin="round"
-      android:strokeWidth="5"
-      android:fillColor="#00000000"
-      android:strokeColor="#ffffff"
-      android:strokeLineCap="round"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+  <item android:drawable="@drawable/newonecallogo_people_white" android:width="78dp" android:height="78dp"/>
+
+</layer-list>

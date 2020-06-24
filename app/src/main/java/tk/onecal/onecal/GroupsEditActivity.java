@@ -3,6 +3,7 @@ package tk.onecal.onecal;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -30,6 +31,12 @@ public class GroupsEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups_edit);
+
+        final int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().setBackgroundDrawableResource(R.drawable.dark_bg_drawable);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.edit_groups));
@@ -90,7 +97,7 @@ public class GroupsEditActivity extends AppCompatActivity {
                     return;
                 }
                 if (input.getText().toString().contains("__,__") || input.getText().toString().contains("null")){
-                    Toast.makeText(getApplicationContext(), "This name contains a forbidden character sequence", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.forbidden_chars_group_name), Toast.LENGTH_LONG).show();
                     return;
                 }
 
